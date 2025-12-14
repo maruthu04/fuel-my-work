@@ -1,0 +1,34 @@
+import { Coffee } from "lucide-react";
+import Link from "next/link";
+
+export default function Footer() {
+  return (
+    <footer className="bg-white border-t mt-12">
+      <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="flex items-center gap-2">
+          <Coffee className="h-5 w-5 text-dark-lighter" />
+          <span className="text-dark-lighter font-medium">
+            FuelMyWork © 2025
+          </span>
+        </div>
+
+        <div className="flex gap-6 text-sm text-dark-lighter">
+          {/* FIX: Internal Link to Terms */}
+          <Link href="/terms" className="hover:text-dark transition-colors">
+            Terms & Privacy
+          </Link>
+
+          {/* FIX: External Link to Twitter (opens in new tab) */}
+          <a
+            href="https://github.com/maruthu04/fuel-my-work"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-dark transition-colors"
+          >
+            Github
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
+}

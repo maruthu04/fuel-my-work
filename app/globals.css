@@ -1,26 +1,31 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* 1. The Orange Brand Color */
+.bg-brand {
+  background-color: #F97316;
+}
+.bg-brand:hover {
+  background-color: #EA580C;
+}
+.text-brand {
+  color: #F97316;
+}
+.border-brand {
+  border-color: #F97316;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* 2. The Dark Text Color */
+.text-dark {
+  color: #1F2937;
+}
+.text-dark-lighter {
+  color: #4B5563;
+}
+.bg-dark {
+  background-color: #1F2937;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 3. The Light Background Color */
+.bg-surface-soft {
+  background-color: #FFF7ED;
 }
