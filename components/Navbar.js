@@ -16,8 +16,13 @@ const Navbar = () => {
           </div>
 
           <div className="register-btn flex gap-6 items-center">
+            <Link href={"/signin"}>
             <button className='border rounded-full px-4 py-1 bg-brand hover:bg-[#EA580C] text-white transition-all shadow-lg hover:shadow-xl'>SignIn</button>
-            <button className='border rounded-full px-4 py-1 hover:bg-[#EA580C] text-black hover:text-white transition-all shadow-lg hover:shadow-xl'>Login</button>
+            </Link>
+            <Link href={"/login"}>
+            <button className='border border-orange-300 rounded-full px-4 py-1 hover:bg-[#EA580C] text-black hover:text-white transition-all shadow-lg hover:shadow-xl'>Login</button>
+            </Link>
+            
           </div>
     </nav>
   )
