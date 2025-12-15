@@ -33,9 +33,9 @@ export default function Home() {
       <div className="bg-gray-500 h-1 opacity-30"></div>
 
       <section className="text-black container mx-auto py-16 px-4">
-    <h1 className="text-4xl font-bold text-center my-2 py-12">
+    <h2 className="text-3xl font-bold text-center my-2 py-12">
         Your Fans can buy you a Coffee
-    </h1>
+    </h2>
     
     {/* Added 'flex-col' for mobile and 'md:flex-row' for desktop */}
     <div className="flex flex-col md:flex-row gap-10 justify-around items-center">
@@ -175,11 +175,9 @@ export default function Home() {
       <div className="bg-gray-500 h-1 opacity-30"></div>
 
       {/* --- Add this as the final section before your Footer --- */}
-<section className="bg-orange-50 py-16">
+<section className="bg-orange-50 py-16 ">
   <div className="container mx-auto px-4 text-center">
-    <h2 className="text-2xl md:text-4xl font-bold mb-6">
-      Ready to get funded doing what you love?
-    </h2>
+    <h2 className="text-3xl mb-6 font-bold">Ready to get funded doing what you love?</h2>
     <p className="text-gray-800 text-lg mb-8 max-w-2xl mx-auto">
       Join thousands of creators, developers, and artists using FuelMyWork to support their passion. It takes less than a minute to start.
     </p>
