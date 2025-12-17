@@ -40,12 +40,11 @@ export default function Dashboard() {
     return <p>Loading...</p>
   }
 
-  return <div className="min-h-screen bg-gray-50 flex justify-center items-center py-6"> {/* Reduced outer padding */}
+  return <div className="min-h-screen bg-gray-50 flex justify-center items-center py-6">
       
-      {/* Changed max-w-2xl to max-w-lg (Smaller Width) */}
       <div className="max-w-lg w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         
-        {/* Compact Header */}
+        {/* Header */}
         <div className="px-6 py-5 text-center border-b border-gray-100">
           <h2 className="text-xl font-bold text-gray-900">
             Welcome to your Dashboard
@@ -58,31 +57,36 @@ export default function Dashboard() {
         {/* Form Inputs */}
         <form className="px-6 py-6">
           
+          {/* Row 1: Personal Info */}
           <div className="grid grid-cols-2 gap-4 mb-2">
-             {/* Name and Username side-by-side to save space */}
-             <InputField id="name" label="Name" placeholder="e.g. Maruthu Devendrar" />
-             <InputField id="username" label="Username" placeholder="maruthu" />
+             <InputField id="name" label="Name" placeholder="e.g. Maruthu" />
+             <InputField id="username" label="Username" placeholder="maruthu00" />
           </div>
 
-          <InputField id="email" label="Email" type="email" placeholder="alpha@gmail.com" />
+          <InputField id="email" label="Email" type="email" placeholder="john@example.com" />
           
           <div className="my-4 border-t border-gray-100"></div>
           
+          {/* Row 2: Images */}
           <InputField id="profilePic" label="Profile Picture URL" placeholder="https://..." />
           <InputField id="coverPic" label="Cover Picture URL" placeholder="https://..." />
           
           <div className="my-4 border-t border-gray-100"></div>
 
-          <InputField id="razorpay" label="Razorpay Credentials" type="password" placeholder="Enter your key secret" />
+          {/* Row 3: Payment Info (New Side-by-Side Section) */}
+          <div className="grid grid-cols-2 gap-4">
+             <InputField id="razorpayId" label="Razorpay ID" placeholder="rzp_test_..." />
+             <InputField id="razorpaySecret" label="Razorpay Secret" type="password" placeholder="key_secret..." />
+          </div>
 
-          {/* Compact Button */}
+          {/* Button */}
           <div className="mt-6">
             <button
               type="submit"
               className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-md text-sm font-bold text-white 
                          bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 
                          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 
-                         transform transition-all active:scale-[0.98] cursor-pointer"
+                         transform transition-all active:scale-[0.98]"
             >
               Save Changes
             </button>
