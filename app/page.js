@@ -23,7 +23,7 @@ export default function Home() {
             placeholder="fuelmywork.com/yourname"
             className="flex-1 px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F97316] text-lg"
           />
-          <button className="w-full bg-brand hover:bg-[#EA580C] text-white font-bold px-8 py-4 rounded-full text-xl">
+          <button className="w-full bg-brand hover:bg-[#EA580C] text-white font-bold px-8 py-4 rounded-full text-xl cursor-pointer">
             Start my page
           </button>
         </div>

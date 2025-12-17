@@ -2,6 +2,8 @@
 import React from 'react';
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 // Placeholder SVGs for social icons - replace with your actual assets
 const GoogleIcon = () => (
@@ -23,12 +25,32 @@ const GithubIcon = () => (
 
 
 const Login = () => {
-    const { data: session } = useSession();
+    const { data: session , status } = useSession();
+    const [formData, setformData] = useState({email:"", password:""});
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
-    if(session) {
-      const router = useRouter();
-      router.push('/dashboard');
+    const handleSubmie = (e) => {
+      e.preventDefault();
+      setError("");
+      setLoading(true);
     }
+
+
+    // if(session) {
+    //   const router = useRouter();
+    //   router.push('/dashboard');
+    // }else {
+    //   console.log("Not logged in");
+    // }
+
+    useEffect(() => {
+        // ✅ GOOD: This runs AFTER the component renders
+        if (status === "authenticated") {
+          router.push("/dashboard")
+        }
+      }, [status, router])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-orange-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -46,11 +68,11 @@ const Login = () => {
 
         {/* Social Logins */}
         <div className="flex flex-col sm:flex-row gap-3">
-          <button className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-lg p-3 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition duration-200 font-medium cursor-pointer">
+          <button className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-lg p-3 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition duration-200 font-medium cursor-pointer" onClick= {()=>{signIn("google")}}>
             <GoogleIcon />
             <span>Log in with Google</span>
           </button>
-          <button className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-lg p-3 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition duration-200 font-medium cursor-pointer" onClick= {()=>{signIn("apple")}}>
+          <button className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-lg p-3 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition duration-200 font-medium cursor-pointer" onClick= {()=>{signIn("github")}}>
             <GithubIcon />
              <span >Log in with Github</span>
           </button>
@@ -63,13 +85,13 @@ const Login = () => {
         </div>
 
         {/* Form */}
-        <form className="mt-8 space-y-6" action="#" method="POST">
+        <form className="mt-8 space-y-6" action="#" method="POST" onSubmit={handleSubmie}>
           <div className="space-y-5">
             <div>
               <label htmlFor="email-address" className="block text-sm font-medium text-gray-700 mb-2">
                 Email address
               </label>
-              <input
+              <input onChange={(e)=>setformData({...formData, email: e.target.value})}
                 id="email-address"
                 name="email"
                 type="email"
@@ -83,7 +105,7 @@ const Login = () => {
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
-              <input
+              <input onChange={(e)=>setformData({...formData, password: e.target.value})}
                 id="password"
                 name="password"
                 type="password"

@@ -21,19 +21,21 @@ const Navbar = () => {
           <div className="register-btn flex gap-6 items-center">
             {session && <>
               <span className="text-dark-lighter">Welcome, <b>{session.user.name}</b></span>
-              <button onClick={() => signOut()} className='border border-orange-300 rounded-full px-4 py-1 hover:bg-[#EA580C] text-black hover:text-white transition-all shadow-lg hover:shadow-xl'>Logout</button></>
+              <button onClick={() => signOut()} className='border border-orange-300 rounded-full px-4 py-1 hover:bg-[#EA580C] text-black hover:text-white transition-all shadow-lg hover:shadow-xl cursor-pointer'>Logout</button></>
             }
               
             
             {!session &&
             <>
             <Link href={"/login"}>
-            <button className='border border-orange-300 rounded-full px-4 py-1 hover:bg-[#EA580C] text-black hover:text-white transition-all shadow-lg hover:shadow-xl'>Login</button>
+            <button className='border border-orange-300 rounded-full px-4 py-1 hover:bg-[#EA580C] text-black hover:text-white transition-all shadow-lg hover:shadow-xl cursor-pointer'>Login</button>
             </Link>
+            <button className=" bg-brand hover:bg-[#EA580C] text-white px-6 py-1 rounded-full text-lg hover:shadow-xl shadow-lg transition-all cursor-pointer">
+            Start my page
+          </button>
             </>
             }
-            
-            
+          
           </div>
     </nav>
   )
