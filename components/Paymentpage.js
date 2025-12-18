@@ -1,20 +1,52 @@
 "use client"
-import React, { useState } from "react"
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from "react"
 import Script from "next/script"
-import { initiate } from "@/actions/useractions" // Import the Server Action
+import { initiate, fetchuser, fetchpayments } from "@/actions/useractions" // Import the Server Action
 
 const PaymentPage = ({ username }) => {
+    const router = useRouter()
     // 1. Manage State Locally
     const [paymentform, setPaymentform] = useState({ name: "", message: "", amount: "" });
+    const [currentUser, setcurrentUser] = useState({})
+    const [supporters, setSupporters] = useState([])
+    // const [payments, setPayments] = useState([])
+
+    useEffect(() => {
+        getData()
+    }, [])
 
     // Handle input changes
     const handleChange = (e) => {
         setPaymentform({ ...paymentform, [e.target.name]: e.target.value });
     }
 
-    // Handle the payment process
-    const handlePayment = async (amountValue, params) => {
-        // Allow passing a specific amount (from buttons) or use the state amount
+    // const getData = async () => {
+    //     let u = fetchuser(username)
+    //     setcurrentUser(u)
+    //     let dbPayments = fetchpayments(username)
+    //     // setPayments(dbPayments)
+    //     setSupporters(dbPayments)
+    // }
+
+    const getData = async () => {
+        try {
+            let dbPayments = await fetchpayments(username);
+            
+            // Safety Check: If dbPayments is not an array, force it to be empty
+            if (!Array.isArray(dbPayments)) {
+                console.error("Expected array but got:", dbPayments);
+                setSupporters([]);
+            } else {
+                setSupporters(dbPayments);
+            }
+        } catch (error) {
+            console.error("Failed to fetch payments:", error);
+            setSupporters([]);
+        }
+    }
+
+    const handlePayment = async (amountValue) => {
         const finalAmount = amountValue || paymentform.amount;
 
         if (!finalAmount || finalAmount <= 0) {
@@ -23,20 +55,43 @@ const PaymentPage = ({ username }) => {
         }
 
         try {
-            // 2. Call the Server Action
-            // We pass the amount, the username (from params), and the form data
+            // 1. Create Order
             const order = await initiate(finalAmount, username, paymentform);
 
-            // 3. Define Razorpay Options
+            // 2. Define Options
             var options = {
-                "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Client-side key
+                "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, 
                 "amount": order.amount, 
                 "currency": "INR",
                 "name": "FuelMyWork", 
                 "description": `Payment to ${username}`,
                 "image": "https://example.com/your_logo",
                 "order_id": order.id, 
-                "callback_url": `${process.env.NEXT_PUBLIC_URL}/api/razorpay/callback`,
+                
+                // 👇 THIS IS THE MISSING PART (The Handler)
+                handler: async function (response) {
+                    
+                    // A. Send proof to backend for verification
+                    const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/razorpay`, {
+                        method: "POST",
+                        body: JSON.stringify({
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature,
+                        }),
+                        headers: { "Content-Type": "application/json" },
+                    });
+
+                    const verifyData = await verifyRes.json();
+
+                    // B. Handle Result
+                    if (verifyData.success) {
+                        router.push(`/payment/success?paymentid=${response.razorpay_payment_id}`)
+                    } else {
+                        alert("Payment verification failed!");
+                    }
+                },
+                
                 "prefill": { 
                     "name": paymentform.name || "Guest", 
                     "email": "guest@example.com",
@@ -47,7 +102,7 @@ const PaymentPage = ({ username }) => {
                 }
             };
 
-            // 4. Open Razorpay
+            // 3. Open Razorpay
             var rzp1 = new window.Razorpay(options);
             rzp1.open();
 
@@ -69,7 +124,7 @@ const PaymentPage = ({ username }) => {
             </div>
 
             <div className="writings flex flex-col items-center mt-20 gap-2">
-                <div className="name text-4xl font-bold">{username}</div>
+                <div className="name text-4xl font-bold">@{username}</div>
                 <div className="description text-slate-500">I am Software Developer</div>
                 <div className='text-slate-500'>9719 members . 82 posts . 350/Releases </div>
             </div>
@@ -79,12 +134,18 @@ const PaymentPage = ({ username }) => {
                 {/* Supporters List */}
                 <div className="supporters w-1/2 bg-gray-50 border border-gray-400 rounded-xl shadow-sm text-gray-900 p-4">
                     <h2 className='text-2xl font-bold mb-3'>Supporters</h2>
-                    <ul className='mx-4 text-lg'>
-                        <li className='flex gap-2 items-center mb-2'>
-                            <img width={33} src="/avatar.gif" alt="avatar" />
-                            Shubham donated <span className='font-bold'>500</span> with a message "Good work"
-                        </li>
-                        {/* Map through your actual supporters here later */}
+                    <ul className='mx-4 text-lg max-h-[350px] overflow-y-auto custom-scrollbar'>
+                        {supporters.length === 0 && <p className="text-gray-500">No supporters yet. Be the first!</p>}
+                        {supporters.map((p, i) => (
+                            <li key={i} className='flex gap-2 items-center mb-3 bg-white p-3 rounded-lg border border-gray-200'>
+                                <img width={35} src="/avatar.gif" alt="avatar" />
+                                <span className="text-sm">
+                                    <span className="font-bold">{p.name}</span> donated 
+                                    <span className="font-bold text-green-600"> ₹{p.amount}</span> with a message: 
+                                    <span className="italic text-gray-600"> "{p.message}"</span>
+                                </span>
+                            </li>
+                        ))}
                     </ul>
                 </div>
 

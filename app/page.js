@@ -1,6 +1,10 @@
+"use client";
 import { CheckCircle, Zap, Shield } from "lucide-react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const { data: session } = useSession();
   return (
     <div className="flex flex-col min-h-screen">
       <section className="flex flex-col items-center justify-center text-center px-4 py-20 lg:py-32 bg-surface-soft">
@@ -23,9 +27,11 @@ export default function Home() {
             placeholder="fuelmywork.com/yourname"
             className="flex-1 px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F97316] text-lg"
           />
+          <Link href={`/${session?.user?.name}`}>
           <button className="w-full bg-brand hover:bg-[#EA580C] text-white font-bold px-8 py-4 rounded-full text-xl cursor-pointer">
             Start my page
           </button>
+          </Link>
         </div>
         <p className="mt-4 text-sm text-gray-500"></p>
       </section>
