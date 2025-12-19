@@ -24,7 +24,7 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
           <input
             type="text"
-            placeholder="fuelmywork.com/yourname"
+            placeholder={`fuelmywork.com/${session?.user?.name}`}
             className="flex-1 px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F97316] text-lg"
           />
           <Link href={`/${session?.user?.name}`}>

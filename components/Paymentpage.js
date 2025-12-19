@@ -21,27 +21,22 @@ const PaymentPage = ({ username }) => {
         setPaymentform({ ...paymentform, [e.target.name]: e.target.value });
     }
 
-    // const getData = async () => {
-    //     let u = fetchuser(username)
-    //     setcurrentUser(u)
-    //     let dbPayments = fetchpayments(username)
-    //     // setPayments(dbPayments)
-    //     setSupporters(dbPayments)
-    // }
-
     const getData = async () => {
         try {
+            // ✅ FIX 1: Fetch the user data and update state
+            let u = await fetchuser(username);
+            setcurrentUser(u);
+
+            // ✅ FIX 2: Fetch payments (existing logic)
             let dbPayments = await fetchpayments(username);
             
-            // Safety Check: If dbPayments is not an array, force it to be empty
             if (!Array.isArray(dbPayments)) {
-                console.error("Expected array but got:", dbPayments);
                 setSupporters([]);
             } else {
                 setSupporters(dbPayments);
             }
         } catch (error) {
-            console.error("Failed to fetch payments:", error);
+            console.error("Error fetching data:", error);
             setSupporters([]);
         }
     }
@@ -60,7 +55,7 @@ const PaymentPage = ({ username }) => {
 
             // 2. Define Options
             var options = {
-                "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, 
+                "key": currentUser.razorpayid, 
                 "amount": order.amount, 
                 "currency": "INR",
                 "name": "FuelMyWork", 
@@ -117,9 +112,9 @@ const PaymentPage = ({ username }) => {
             <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
             
             <div className="cover-image relative">
-                <img className="cover-image w-full h-[350px] object-cover" src="/coverimage.jpg" alt="cover photo" />
+                <img className="cover-image w-full h-[350px] object-cover" src={currentUser?.coverpic} alt="cover photo" />
                 <div className="profile absolute -bottom-16 left-1/2 transform -translate-x-1/2">
-                    <img width={140} className='rounded-full bg-slate-600 border-4 border-white' src="/profile.webp" alt="profile" />
+                    <img width={140} height={140} className='rounded-full bg-slate-600 border-4 border-white object-cover aspect-square' src={currentUser?.profilepic}  alt="profile" />
                 </div>
             </div>
 
@@ -134,7 +129,7 @@ const PaymentPage = ({ username }) => {
                 {/* Supporters List */}
                 <div className="supporters w-1/2 bg-gray-50 border border-gray-400 rounded-xl shadow-sm text-gray-900 p-4">
                     <h2 className='text-2xl font-bold mb-3'>Supporters</h2>
-                    <ul className='mx-4 text-lg max-h-[350px] overflow-y-auto custom-scrollbar'>
+                    <ul className='mx-4 text-lg max-h-[300px] overflow-y-auto custom-scrollbar'>
                         {supporters.length === 0 && <p className="text-gray-500">No supporters yet. Be the first!</p>}
                         {supporters.map((p, i) => (
                             <li key={i} className='flex gap-2 items-center mb-3 bg-white p-3 rounded-lg border border-gray-200'>

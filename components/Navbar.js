@@ -30,9 +30,12 @@ const Navbar = () => {
             <Link href={"/login"}>
             <button className='border border-orange-300 rounded-full px-4 py-1 hover:bg-[#EA580C] text-black hover:text-white transition-all shadow-lg hover:shadow-xl cursor-pointer'>Login</button>
             </Link>
+            <Link href={"/register"}>
+            
             <button className=" bg-brand hover:bg-[#EA580C] text-white px-6 py-1 rounded-full text-lg hover:shadow-xl shadow-lg transition-all cursor-pointer">
             Start my page
           </button>
+            </Link>
             </>
             }
           
