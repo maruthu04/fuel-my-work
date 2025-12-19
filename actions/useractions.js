@@ -93,3 +93,16 @@ export const updateProfile = async (data, oldusername) => {
     
     return { success: true };
 }
+
+
+export const fetchAllCreators = async () => {
+    await connectDb();
+    // Fetch 6 users who have a username set
+    const users = await User.find({ username: { $exists: true, $ne: null } }).limit(6).lean();
+    
+    // Convert _id objects to strings so they can pass to the Client Component
+    return users.map(user => ({
+        ...user,
+        _id: user._id.toString(),
+    }));
+}

@@ -7,8 +7,14 @@ import SessionWrapper from "@/components/SessionWrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "FuelMyWork",
-  description: "Fund your creative work.",
+  title: {
+    template: '%s | FuelMyWork', // %s is replaced by the specific page title
+    default: 'FuelMyWork - Fund Your Projects', // Default if a page doesn't have a title
+  },
+  description: 'The best platform for developers to showcase their projects and get funded.',
+  icons: {
+    icon: '/icon.png', // Explicitly point to it (optional if file is in app/)
+  },
 };
 
 export default async function RootLayout({ children }) {

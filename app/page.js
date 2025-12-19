@@ -1,12 +1,27 @@
+
+
 "use client";
-import { CheckCircle, Zap, Shield } from "lucide-react";
+import { Search } from "lucide-react"; 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { fetchAllCreators } from "@/actions/useractions";
 
 export default function Home() {
   const { data: session } = useSession();
+  const [creators, setCreators] = useState([]);
+
+  useEffect(() => {
+    fetchAllCreators().then((data) => {
+      setCreators(data || []);
+    });
+  }, []);
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen font-sans">
+      
+      {/* --- 1. HERO SECTION --- */}
+
       <section className="flex flex-col items-center justify-center text-center px-4 py-20 lg:py-32 bg-surface-soft">
         <div className="bg-white border border-gray-200 rounded-full px-4 py-1.5 text-sm font-medium text-brand mb-6 shadow-sm">
           🚀 The #1 way to get supported
@@ -36,166 +51,139 @@ export default function Home() {
         <p className="mt-4 text-sm text-gray-500"></p>
       </section>
 
-      <div className="bg-gray-500 h-1 opacity-30"></div>
+      
 
+      <div className="bg-gray-500 h-[1px] opacity-20"></div>
+
+      {/* --- 2. FEATURES SECTION --- */}
       <section className="text-black container mx-auto py-16 px-4">
-    <h2 className="text-3xl font-bold text-center my-2 py-12">
-        Your Fans can buy you a Coffee
-    </h2>
-    
-    {/* Added 'flex-col' for mobile and 'md:flex-row' for desktop */}
-    <div className="flex flex-col md:flex-row gap-10 justify-around items-center">
-        
-        {/* Item 1 */}
-        <div className="item space-y-3 flex flex-col items-center justify-center">
-            {/* Changed bg-slate-400 to bg-orange-100 to match the Coffee theme */}
+        <h2 className="text-3xl font-bold text-center my-2 py-12 text-gray-900">
+          Your Fans can buy you a Coffee
+        </h2>
+        <div className="flex flex-col md:flex-row gap-10 justify-around items-center">
+          <div className="item space-y-3 flex flex-col items-center justify-center">
             <div className="bg-orange-100 rounded-full p-4 hover:scale-110 transition-transform duration-300 cursor-pointer">
-                <img width={88} src="./man.gif" alt="Creator working" />
+              <img width={88} src="./man.gif" alt="Creator working" />
             </div>
-            <p className="font-bold text-lg">Fund Your Passion</p>
-            <p className="text-center text-gray-700 max-w-xs">
-                Focus on what you love doing while your supporters fuel your creative journey.
+            <p className="font-bold text-lg text-gray-900">Fund Your Passion</p>
+            <p className="text-center text-gray-600 max-w-xs">
+              Focus on what you love doing while your supporters fuel your creative journey.
             </p>
-        </div>
-
-        {/* Item 2 */}
-        <div className="item space-y-3 flex flex-col items-center justify-center">
+          </div>
+          <div className="item space-y-3 flex flex-col items-center justify-center">
             <div className="bg-orange-100 rounded-full p-4 hover:scale-110 transition-transform duration-300 cursor-pointer">
-                <img width={88} src="./coin.gif" alt="Coin support" />
+              <img width={88} src="./coin.gif" alt="Coin support" />
             </div>
-            <p className="font-bold text-lg">Get Paid Directly</p>
-            <p className="text-center text-gray-700 max-w-xs">
-                Accept support, tips, and membership fees directly from your fans with no hassle.
+            <p className="font-bold text-lg text-gray-900">Get Paid Directly</p>
+            <p className="text-center text-gray-600 max-w-xs">
+              Accept support, tips, and membership fees directly from your fans with no hassle.
             </p>
-        </div>
-
-        {/* Item 3 */}
-        <div className="item space-y-3 flex flex-col items-center justify-center">
-             <div className="bg-orange-100 rounded-full p-4 hover:scale-110 transition-transform duration-300 cursor-pointer">
-                <img width={88} src="./group.gif" alt="Community group" />
+          </div>
+          <div className="item space-y-3 flex flex-col items-center justify-center">
+            <div className="bg-orange-100 rounded-full p-4 hover:scale-110 transition-transform duration-300 cursor-pointer">
+              <img width={88} src="./group.gif" alt="Community group" />
             </div>
-            <p className="font-bold text-lg">Build a Community</p>
-            <p className="text-center text-gray-700 max-w-xs">
-                Connect deeply with your audience and turn casual followers into loyal members.
+            <p className="font-bold text-lg text-gray-900">Build a Community</p>
+            <p className="text-center text-gray-600 max-w-xs">
+              Connect deeply with your audience and turn casual followers into loyal members.
             </p>
+          </div>
         </div>
-    </div>
-</section>
+      </section>
 
-      <div className="bg-gray-500 h-1 opacity-30"></div>
-
-      {/* --- Add this below your current Features Section --- */}
-<section className="bg-orange-50 py-20 text-black">
-  <div className="container mx-auto px-4">
-    <h2 className="text-3xl font-bold text-center mb-12">Loved by Creators</h2>
-    
-    {/* Grid for Testimonials */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
       
-      {/* Testimonial 1 */}
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-        <img 
-          src="https://i.pravatar.cc/150?img=32" 
-          alt="User Avatar" 
-          className="w-16 h-16 rounded-full mb-4 border-2 border-orange-400"
-        />
-        <p className="text-gray-700 italic mb-4">"FuelMyWork changed the game for me. It's so simple for my podcast listeners to support me now. The direct payments are a lifesaver."</p>
-        <h4 className="font-bold">Sarah Jenkins</h4>
-        <p className="text-sm text-gray-500">Podcaster & Writer</p>
-      </div>
 
-      {/* Testimonial 2 */}
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-        <img 
-          src="https://i.pravatar.cc/150?img=11" 
-          alt="User Avatar" 
-          className="w-16 h-16 rounded-full mb-4 border-2 border-orange-400"
-        />
-        <p className="text-gray-700 italic mb-4">"I love that I don't need to offer tiered rewards if I don't want to. My fans just want to buy me a coffee for my open-source code."</p>
-        <h4 className="font-bold">David Chen</h4>
-        <p className="text-sm text-gray-500">Developer</p>
-      </div>
+      {/* --- 3. TESTIMONIALS --- */}
 
-      {/* Testimonial 3 */}
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-        <img 
-          src="https://i.pravatar.cc/150?img=5" 
-          alt="User Avatar" 
-          className="w-16 h-16 rounded-full mb-4 border-2 border-orange-400"
-        />
-        <p className="text-gray-700 italic mb-4">"Setting up my page took literally 5 minutes. It's the easiest way to monetize my art Instagram without feeling pushy."</p>
-        <h4 className="font-bold">Maria Rodriguez</h4>
-        <p className="text-sm text-gray-500">Digital Artist</p>
-      </div>
+      <div className="bg-gray-500 h-[1px] opacity-20"></div>
+
+      {/* --- 4. HOW IT WORKS --- */}
       
-    </div>
-  </div>
-</section>
 
-      <div className="bg-gray-500 h-1 opacity-30"></div>
-
-      {/* --- Add this below the Testimonials Section --- */}
-<section className="bg-white py-20 text-black">
-  <div className="container mx-auto px-4">
-     <h2 className="text-3xl font-bold text-center mb-16">It's easier than you think</h2>
-     
-     <div className="flex flex-col md:flex-row justify-center items-start gap-10 md:gap-20">
+      {/* --- ✨ 5. MOVED HERE: SPECTACULAR EXPLORE SECTION ✨ --- */}
+      <section className="py-24 relative overflow-hidden bg-gradient-to-br from-white via-orange-50/50 to-white">
         
-        {/* Step 1 */}
-        <div className="flex flex-col items-center text-center max-w-sm">
-           <div className="w-16 h-16 bg-orange-500 text-white text-2xl font-bold rounded-full flex items-center justify-center mb-6 shadow-lg">
-             1
-           </div>
-           <h3 className="text-xl font-bold mb-2">Create your page</h3>
-           <p className="text-gray-600">
-             Sign up in seconds. Customize your page with a photo and a short bio. No coding required.
-           </p>
+        {/* Subtle Decorative Blobs (Light) */}
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-orange-200/20 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-yellow-200/20 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
+
+        <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center mb-16">
+                <span className="text-orange-600 font-bold tracking-wider uppercase text-sm mb-2 block">Community</span>
+                <h2 className="text-3xl md:text-5xl font-extrabold mb-4 text-gray-900">
+                    Discover Rising Talent
+                </h2>
+                <p className="text-gray-500 text-lg max-w-xl mx-auto">
+                    Explore the community of creators, developers, and artists fueling their passion.
+                </p>
+            </div>
+
+            {/* Creators Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {creators.length > 0 ? (
+                    creators.map((user) => (
+                        <div key={user._id} className="group relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-gray-100 flex flex-col items-center">
+                            
+                            {/* Profile Image with Ring */}
+                            <div className="relative mb-6">
+                                <div className="absolute inset-0 bg-orange-100 rounded-full scale-110 group-hover:scale-125 transition-transform duration-500"></div>
+                                <img 
+                                    src={user.profilepic || "/avatar.gif"} 
+                                    alt={user.username}
+                                    className="relative w-24 h-24 rounded-full object-cover border-4 border-white shadow-sm z-10"
+                                />
+                            </div>
+
+                            {/* Text Content */}
+                            <h3 className="text-xl font-bold text-gray-900 mb-1">{user.name}</h3>
+                            <p className="text-gray-400 text-sm mb-6">@{user.username}</p>
+
+                            {/* Action Button */}
+                            <Link href={`/${user.username}`} className="w-full">
+                                <button className="w-full py-3 rounded-xl bg-gray-900 text-white hover:bg-orange-600 font-bold transition-colors shadow-md flex items-center justify-center gap-2">
+                                    <span>☕</span> Support
+                                </button>
+                            </Link>
+                        </div>
+                    ))
+                ) : (
+                    <div className="col-span-full text-center py-10">
+                        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600 mb-4"></div>
+                        <p className="text-gray-500">Loading creators...</p>
+                    </div>
+                )}
+            </div>
+
+            {/* View All Button */}
+            <div className="mt-16 text-center">
+                 <Link href="/creators">
+                    <button className="px-8 py-3 rounded-full bg-white border border-gray-200 text-gray-700 hover:border-orange-600 hover:text-orange-600 transition-all font-semibold flex items-center gap-2 mx-auto shadow-sm hover:shadow-md">
+                        <Search size={18} /> Explore All Creators
+                    </button>
+                 </Link>
+            </div>
         </div>
+      </section>
 
-        {/* Step 2 */}
-         <div className="flex flex-col items-center text-center max-w-sm">
-           <div className="w-16 h-16 bg-orange-500 text-white text-2xl font-bold rounded-full flex items-center justify-center mb-6 shadow-lg">
-             2
-           </div>
-           <h3 className="text-xl font-bold mb-2">Share your link</h3>
-           <p className="text-gray-600">
-             Add your unique FuelMyWork link to your social bios, video descriptions, or website.
-           </p>
+      <div className="bg-gray-500 h-[1px] opacity-20"></div>
+
+      {/* --- 6. FINAL CALL TO ACTION --- */}
+      <section className="bg-orange-50 py-16 ">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl mb-6 font-bold text-gray-900">
+            Ready to get funded doing what you love?
+          </h2>
+          <p className="text-gray-800 text-lg mb-8 max-w-2xl mx-auto">
+            Join thousands of creators, developers, and artists using FuelMyWork to support their passion. It takes less than a minute to start.
+          </p>
+
+          <Link href="/login">
+            <button className="bg-white text-orange-600 font-bold py-4 px-10 rounded-full text-lg hover:bg-orange-50 hover:scale-105 transition transform duration-200 shadow-md hover:border-orange-300 border border-transparent">
+              Start my page — It's Free
+            </button>
+          </Link>
         </div>
-
-        {/* Step 3 */}
-         <div className="flex flex-col items-center text-center max-w-sm">
-           <div className="w-16 h-16 bg-orange-500 text-white text-2xl font-bold rounded-full flex items-center justify-center mb-6 shadow-lg">
-             3
-           </div>
-           <h3 className="text-xl font-bold mb-2">Get supported</h3>
-           <p className="text-gray-600">
-             Fans can support you instantly. Receive payments directly with 0% platform fees on donations.
-           </p>
-        </div>
-
-     </div>
-  </div>
-</section>
-
-      <div className="bg-gray-500 h-1 opacity-30"></div>
-
-      {/* --- Add this as the final section before your Footer --- */}
-<section className="bg-orange-50 py-16 ">
-  <div className="container mx-auto px-4 text-center">
-    <h2 className="text-3xl mb-6 font-bold">Ready to get funded doing what you love?</h2>
-    <p className="text-gray-800 text-lg mb-8 max-w-2xl mx-auto">
-      Join thousands of creators, developers, and artists using FuelMyWork to support their passion. It takes less than a minute to start.
-    </p>
-    
-    {/* Inverted button style for impact */}
-    <button className="bg-white text-orange-600 font-bold py-4 px-10 rounded-full text-lg hover:bg-orange-50 hover:scale-105 transition transform duration-200 shadow-md hover:border-orange-300 border">
-      Start my page — It's Free
-    </button>
-    
-  </div>
-</section>
-
+      </section>
     </div>
   );
 }

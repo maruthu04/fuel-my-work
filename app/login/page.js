@@ -46,6 +46,7 @@ const Login = () => {
     // }
 
     useEffect(() => {
+        document.title = `Login | FuelMyWork`;
         // ✅ GOOD: This runs AFTER the component renders
         if (status === "authenticated") {
           router.push("/dashboard")
@@ -160,3 +161,4 @@ const Login = () => {
 };
 
 export default Login;
+

@@ -52,3 +52,8 @@ export default function FAQ() {
     </main>
   );
 }
+
+export const metadata = {
+  title: "FAQ",
+  description: "Frequently Asked Questions about our platform and services.",
+}

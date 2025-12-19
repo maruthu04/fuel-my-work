@@ -57,3 +57,8 @@ export default function About() {
     </main>
   );
 }
+
+export const metadata = {
+  title: "About",
+  description: "Learn more about our mission to help developers showcase their work easily.",
+}

@@ -21,7 +21,7 @@ const Navbar = () => {
           <div className="register-btn flex gap-6 items-center">
             {session && <>
               <span className="text-dark-lighter">Welcome, <b>{session.user.name}</b></span>
-              <button onClick={() => signOut()} className='border border-orange-300 rounded-full px-4 py-1 hover:bg-[#EA580C] text-black hover:text-white transition-all shadow-lg hover:shadow-xl cursor-pointer'>Logout</button></>
+              <button onClick={() => signOut({ callbackUrl: "/" })} className='border border-orange-300 rounded-full px-4 py-1 hover:bg-[#EA580C] text-black hover:text-white transition-all shadow-lg hover:shadow-xl cursor-pointer'>Logout</button></>
             }
               
             

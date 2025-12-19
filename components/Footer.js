@@ -1,14 +1,16 @@
 import { Coffee } from "lucide-react";
 import Link from "next/link";
 
+
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
   return (
     <footer className="bg-white border-t">
       <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="flex items-center gap-2">
           <Coffee className="h-5 w-5 text-dark-lighter" />
           <span className="text-dark-lighter font-medium">
-            FuelMyWork © 2025
+            FuelMyWork © {currentYear}
           </span>
         </div>
 

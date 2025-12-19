@@ -11,13 +11,15 @@ const PaymentPage = ({ username }) => {
     const router = useRouter()
     // 1. Manage State Locally
     const [paymentform, setPaymentform] = useState({ name: "", message: "", amount: "" });
-    const [currentUser, setcurrentUser] = useState({})
+    const [currentUser, setcurrentUser] = useState(null)
     const [supporters, setSupporters] = useState([])
+    const [userNotFound, setUserNotFound] = useState(false)
     // const [payments, setPayments] = useState([])
 
     useEffect(() => {
+        document.title = `${username} | FuelMyWork`;
         getData()
-    }, [])
+    }, [username])
 
     // Handle input changes
     const handleChange = (e) => {
@@ -28,6 +30,11 @@ const PaymentPage = ({ username }) => {
         try {
             // ✅ FIX 1: Fetch the user data and update state
             let u = await fetchuser(username);
+            if (!u) {
+                setUserNotFound(true);
+                return;
+            }
+
             setcurrentUser(u);
 
             // ✅ FIX 2: Fetch payments (existing logic)
@@ -42,6 +49,26 @@ const PaymentPage = ({ username }) => {
             console.error("Error fetching data:", error);
             setSupporters([]);
         }
+    }
+
+    if (userNotFound) {
+        return (
+            <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
+                <h1 className="text-4xl font-bold text-gray-800 mb-4">🚫 User Not Found</h1>
+                <p className="text-lg text-gray-600 mb-8">
+                    The user <span className="font-bold text-orange-600">@{username}</span> does not exist.
+                </p>
+                <Link href="/">
+                    <button className="bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-3 rounded-full transition-all">
+                        Go to Home
+                    </button>
+                </Link>
+            </div>
+        )
+    }
+
+    if (!currentUser) {
+        return <div className="min-h-screen flex justify-center items-center">Loading...</div>
     }
 
     const handlePayment = async (amountValue) => {
