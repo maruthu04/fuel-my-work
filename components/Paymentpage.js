@@ -3,8 +3,11 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from "react"
 import Script from "next/script"
 import { initiate, fetchuser, fetchpayments } from "@/actions/useractions" // Import the Server Action
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 
 const PaymentPage = ({ username }) => {
+    const { data: session } = useSession();
     const router = useRouter()
     // 1. Manage State Locally
     const [paymentform, setPaymentform] = useState({ name: "", message: "", amount: "" });
@@ -113,6 +116,13 @@ const PaymentPage = ({ username }) => {
             
             <div className="cover-image relative">
                 <img className="cover-image w-full h-[350px] object-cover" src={currentUser?.coverpic} alt="cover photo" />
+                {session && session.user.email === currentUser?.email && (
+        <Link href="/dashboard">
+            <button className="absolute top-4 right-4 bg-white/80 hover:bg-white text-gray-900 font-bold py-2 px-6 rounded-full shadow-lg backdrop-blur-sm border border-gray-200 transition-all z-10 flex items-center gap-2">
+                <span>✏️</span> Edit Profile
+            </button>
+        </Link>
+    )}
                 <div className="profile absolute -bottom-16 left-1/2 transform -translate-x-1/2">
                     <img width={140} height={140} className='rounded-full bg-slate-600 border-4 border-white object-cover aspect-square' src={currentUser?.profilepic}  alt="profile" />
                 </div>
@@ -120,8 +130,8 @@ const PaymentPage = ({ username }) => {
 
             <div className="writings flex flex-col items-center mt-20 gap-2">
                 <div className="name text-4xl font-bold">@{username}</div>
-                <div className="description text-slate-500">I am Software Developer</div>
-                <div className='text-slate-500'>9719 members . 82 posts . 350/Releases </div>
+                <div className="description text-slate-500">Lets help {username} for a fuel</div>
+                <div className='text-slate-500'>{supporters.length} Payments .  ₹{supporters.reduce((sum, p) => sum + p.amount, 0)} raised</div>
             </div>
 
             <div className="payment flex gap-8 w-[80%] mx-auto mt-11 mb-20">

@@ -1,4 +1,5 @@
 "use client"
+import Link from "next/link"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -34,6 +35,7 @@ export default function Dashboard() {
   const { data: session, status, update } = useSession()
   const router = useRouter()
   const [form, setForm] = useState({})
+  const [savedUsername, setSavedUsername] = useState("")
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -45,8 +47,10 @@ export default function Dashboard() {
 
   const getData = async () => {
     let u = await fetchuser(session?.user?.name);
+    const data = u || session?.user || {};
     // Merge DB data with session data (if DB is empty)
-    setForm(u || session?.user || {}); 
+    setForm(data);
+    setSavedUsername(data.username);
   }
 
   // Handle typing in inputs
@@ -56,7 +60,16 @@ export default function Dashboard() {
 
   const handleSubmit = async (formData) => {
       await updateProfile(formData, session?.user?.name);
+      await update({
+        ...session,
+        user: {
+          ...session?.user,
+          name: formData.get("username"), // Update the name/username in the session
+        },
+      });
       alert("Profile Updated Successfully!");
+      setSavedUsername(formData.get("username"));
+      router.refresh();
   }
 
   if (status === "loading") return <div>Loading...</div>
@@ -90,10 +103,24 @@ export default function Dashboard() {
              <InputField id="razorpaysecret" label="Razorpay Secret" type="password" value={form.razorpaysecret} onChange={handleChange} />
           </div>
 
-          <div className="mt-6">
-            <button type="submit" className="w-full py-3 bg-orange-600 text-white font-bold rounded-lg hover:bg-orange-700 transition-all">
+          <div className="mt-6 flex items-center gap-2">
+            <button type="submit" className="w-full py-2.5 px-4 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg transition-all">
               Save Changes
             </button>
+
+            {/* Only show 'Go to Page' if the username matches the saved one */}
+            {form.username && form.username === savedUsername ? (
+                <Link href={`/${form.username}`} className="w-full">
+                    <button type="button" className="w-full py-2.5 px-4 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-bold rounded-lg transition-all">
+                      Go to my Page 🚀
+                    </button>
+                </Link>
+            ) : (
+                // Disable button if user has typed something new but hasn't saved
+                <button disabled type="button" className="w-full py-2.5 px-4 border border-gray-200 bg-gray-100 text-gray-400 font-bold rounded-lg cursor-not-allowed">
+                  Save to Visit 🔒
+                </button>
+            )}
           </div>
         </form>
       </div>

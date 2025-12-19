@@ -70,17 +70,26 @@ export const updateProfile = async (data, oldusername) => {
     await connectDb();
     let ndata = Object.fromEntries(data);
 
-    // Check if username is taken (skip check if they are keeping their own username)
+    // 1. Check if the username is actually changing
     if (oldusername !== ndata.username) {
+        
+        // A. check if the NEW username is already taken
         let u = await User.findOne({ username: ndata.username });
         if (u) {
             return { error: "Username already taken" };
         }
+
+        // B. ✅ CRITICAL FIX: Update all payments linked to the old username
+        // This finds every payment where 'to_user' was the old name 
+        // and updates it to the new name.
+        await Payment.updateMany(
+            { to_user: oldusername }, // Find payments sent to old username
+            { to_user: ndata.username } // Update them to new username
+        );
     }
 
-    // Update the user based on email. 
-    // { upsert: true } creates the user if they don't exist yet.
-    await User.updateOne({ email: ndata.email }, ndata, { upsert: true });
+    // 2. Finally, update the User profile itself
+    await User.updateOne({ email: ndata.email }, ndata);
     
     return { success: true };
 }
