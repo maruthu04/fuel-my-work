@@ -60,7 +60,6 @@ export const fetchpayments = async (username) => {
 
     return payments.map(p => {
         p._id = p._id.toString();
-        // p.to_user is already a string now, so no need to convert it
         return p;
     });
 }
@@ -70,16 +69,13 @@ export const updateProfile = async (data, oldusername) => {
     await connectDb();
     let ndata = Object.fromEntries(data);
 
-    // 1. Check if the username is actually changing
     if (oldusername !== ndata.username) {
         
-        // A. check if the NEW username is already taken
         let u = await User.findOne({ username: ndata.username });
         if (u) {
             return { error: "Username already taken" };
         }
 
-        // B. ✅ CRITICAL FIX: Update all payments linked to the old username
         // This finds every payment where 'to_user' was the old name 
         // and updates it to the new name.
         await Payment.updateMany(
@@ -88,7 +84,7 @@ export const updateProfile = async (data, oldusername) => {
         );
     }
 
-    // 2. Finally, update the User profile itself
+    // Finally, update the User profile itself
     await User.updateOne({ email: ndata.email }, ndata);
     
     return { success: true };

@@ -1,11 +1,11 @@
 "use client"
 import React from 'react';
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signIn } from "next-auth/react"
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
+// import { toast } from 'react-toastify'; // Optional: if you want toast notifications
 
-// Placeholder SVGs for social icons - replace with your actual assets
+// ... (Keep your GoogleIcon and GithubIcon components exactly as they are) ...
 const GoogleIcon = () => (
   <svg className="h-5 w-5" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
     <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238541)">
@@ -19,10 +19,9 @@ const GoogleIcon = () => (
 
 const GithubIcon = () => (
   <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5c.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34c-.46-1.16-1.11-1.47-1.11-1.47c-.91-.62.07-.6.07-.6c1 .07 1.53 1.03 1.53 1.03c.89 1.52 2.34 1.08 2.91.83c.09-.65.35-1.09.63-1.34c-2.22-.25-4.55-1.11-4.55-4.92c0-1.09.39-1.98 1.02-2.68c-.1-.25-.45-1.27.1-2.64c0 0 .84-.27 2.75 1.02c.79-.22 1.65-.33 2.5-.33c.85 0 1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02c.55 1.37.2 2.39.1 2.64c.63.7 1.02 1.59 1.02 2.68c0 3.83-2.33 4.66-4.56 4.91c.36.31.68.92.68 1.85v2.74c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z" />
+    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5c.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34c-.46-1.16-1.11-1.47-1.11-1.47c-.91-.62.07-.6.07-.6c1 .07 1.53 1.03 1.53 1.03c.89 1.52 2.34 1.02 2.91.83c.09-.65.35-1.09.63-1.34c-2.22-.25-4.55-1.11-4.55-4.92c0-1.09.39-1.98 1.02-2.68c-.1-.25-.45-1.27.1-2.64c0 0 .84-.27 2.75 1.02c.79-.22 1.65-.33 2.5-.33c.85 0 1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02c.55 1.37.2 2.39.1 2.64c.63.7 1.02 1.59 1.02 2.68c0 3.83-2.33 4.66-4.56 4.91c.36.31.68.92.68 1.85v2.74c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z" />
   </svg>
 );
-
 
 const Login = () => {
     const { data: session , status } = useSession();
@@ -31,34 +30,40 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    const handleSubmie = (e) => {
-      e.preventDefault();
-      setError("");
-      setLoading(true);
-    }
-
-
-    // if(session) {
-    //   const router = useRouter();
-    //   router.push('/dashboard');
-    // }else {
-    //   console.log("Not logged in");
-    // }
-
     useEffect(() => {
         document.title = `Login | FuelMyWork`;
-        // ✅ GOOD: This runs AFTER the component renders
         if (status === "authenticated") {
           router.push("/dashboard")
         }
-      }, [status, router])
+    }, [status, router])
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setError("");
+      setLoading(true);
+
+      // 1. Call NextAuth signIn with 'credentials'
+      const res = await signIn("credentials", {
+        redirect: false, // Don't redirect automatically, we want to handle errors
+        email: formData.email,
+        password: formData.password,
+      });
+
+      // 2. Handle the response
+      if (res?.error) {
+        setLoading(false);
+        setError("Invalid email or password"); // Or use res.error for specific messages
+      } else {
+        // Success: The useEffect above will detect 'authenticated' and redirect, 
+        // or we can force it here:
+        router.push("/dashboard");
+      }
+    }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-orange-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-lg w-full space-y-8 bg-white p-8 sm:p-10 rounded-2xl shadow-xl border border-gray-100">
         <div>
-          {/* Optional: Put Logo Here */}
-          {/* <img className="mx-auto h-12 w-auto" src="/logo.png" alt="FuelMyWork" /> */}
           <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900">
             Welcome back
           </h2>
@@ -85,8 +90,15 @@ const Login = () => {
             <span className="bg-white px-4 text-sm text-gray-500 relative z-10 font-medium">or</span>
         </div>
 
+        {/* --- ERROR DISPLAY ADDED HERE --- */}
+        {error && (
+            <div className="bg-red-50 text-red-600 border border-red-200 text-sm p-3 rounded-lg mb-4 text-center animate-pulse">
+                {error}
+            </div>
+        )}
+
         {/* Form */}
-        <form className="mt-8 space-y-6" action="#" method="POST" onSubmit={handleSubmie}>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-5">
             <div>
               <label htmlFor="email-address" className="block text-sm font-medium text-gray-700 mb-2">
@@ -141,14 +153,16 @@ const Login = () => {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              disabled={loading}
+              className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white 
+                ${loading ? "bg-orange-300 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600 transform hover:-translate-y-0.5"} 
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-200 shadow-md`}
             >
-              Sign in to your account
+              {loading ? "Signing in..." : "Sign in to your account"}
             </button>
           </div>
         </form>
 
-        {/* Switch to Signup */}
         <div className="text-center text-sm text-gray-600">
             Don’t have an account yet?{' '}
             <a href="/signup" className="font-medium text-orange-600 hover:text-orange-500 transition">
@@ -161,4 +175,3 @@ const Login = () => {
 };
 
 export default Login;
-

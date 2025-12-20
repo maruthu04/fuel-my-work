@@ -15,12 +15,10 @@ export default function Footer() {
         </div>
 
         <div className="flex gap-6 text-sm text-dark-lighter">
-          {/* FIX: Internal Link to Terms */}
           <Link href="/terms" className="hover:text-dark transition-colors">
             Terms & Privacy
           </Link>
 
-          {/* FIX: External Link to Twitter (opens in new tab) */}
           <a
             href="https://github.com/maruthu04/fuel-my-work"
             target="_blank"

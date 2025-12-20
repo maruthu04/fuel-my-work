@@ -2,19 +2,17 @@
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from "react"
 import Script from "next/script"
-import { initiate, fetchuser, fetchpayments } from "@/actions/useractions" // Import the Server Action
+import { initiate, fetchuser, fetchpayments } from "@/actions/useractions"
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 const PaymentPage = ({ username }) => {
     const { data: session } = useSession();
     const router = useRouter()
-    // 1. Manage State Locally
     const [paymentform, setPaymentform] = useState({ name: "", message: "", amount: "" });
     const [currentUser, setcurrentUser] = useState(null)
     const [supporters, setSupporters] = useState([])
     const [userNotFound, setUserNotFound] = useState(false)
-    // const [payments, setPayments] = useState([])
 
     useEffect(() => {
         document.title = `${username} | FuelMyWork`;
@@ -28,7 +26,6 @@ const PaymentPage = ({ username }) => {
 
     const getData = async () => {
         try {
-            // ✅ FIX 1: Fetch the user data and update state
             let u = await fetchuser(username);
             if (!u) {
                 setUserNotFound(true);
@@ -37,7 +34,6 @@ const PaymentPage = ({ username }) => {
 
             setcurrentUser(u);
 
-            // ✅ FIX 2: Fetch payments (existing logic)
             let dbPayments = await fetchpayments(username);
             
             if (!Array.isArray(dbPayments)) {
@@ -93,7 +89,6 @@ const PaymentPage = ({ username }) => {
                 "image": "https://example.com/your_logo",
                 "order_id": order.id, 
                 
-                // 👇 THIS IS THE MISSING PART (The Handler)
                 handler: async function (response) {
                     
                     // A. Send proof to backend for verification
@@ -109,7 +104,7 @@ const PaymentPage = ({ username }) => {
 
                     const verifyData = await verifyRes.json();
 
-                    // B. Handle Result
+                   
                     if (verifyData.success) {
                         router.push(`/payment/success?paymentid=${response.razorpay_payment_id}`)
                     } else {

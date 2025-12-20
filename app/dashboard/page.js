@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { updateProfile, fetchuser } from "@/actions/useractions"
 
-// ✅ FIX: Define this component OUTSIDE of the main Dashboard function
-// We also added 'value' and 'onChange' so typing works correctly
 const InputField = ({ label, id, type = "text", placeholder, value, onChange }) => {
   return (
     <div className="mb-5">
@@ -20,8 +18,8 @@ const InputField = ({ label, id, type = "text", placeholder, value, onChange }) 
         type={type}
         id={id}
         name={id}
-        value={value || ""} // Controlled input
-        onChange={onChange} // Update state on type
+        value={value || ""} 
+        onChange={onChange} 
         placeholder={placeholder}
         className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 placeholder-gray-400 
                    focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 

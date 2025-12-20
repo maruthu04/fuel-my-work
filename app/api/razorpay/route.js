@@ -17,7 +17,6 @@ export async function POST(req) {
     const payment = await Payment.findOne({ oid: body.razorpay_order_id });
     
     if (!payment) {
-        console.log("❌ Payment Order Not Found in DB:", body.razorpay_order_id);
         return NextResponse.json({ success: false, message: "Order ID not found" });
     }
     console.log("🔹 2. Found Payment in DB:", payment);
@@ -28,13 +27,11 @@ export async function POST(req) {
     const user = await User.findOne({ username: payment.to_user });
 
     if (!user) {
-        console.log("❌ Recipient User Not Found:", payment.to_user);
         return NextResponse.json({ success: false, message: "User not found" });
     }
     console.log("🔹 3. Found User:", user.username);
 
     if (!user.razorpaysecret) {
-        console.log("❌ Secret Key Missing for User:", user.username);
         return NextResponse.json({ success: false, message: "Secret key not set" });
     }
 
@@ -45,11 +42,7 @@ export async function POST(req) {
       .update(body.razorpay_order_id + "|" + body.razorpay_payment_id)
       .digest("hex");
 
-    console.log("🔸 Generated Signature:", generated_signature);
-    console.log("🔸 Received Signature: ", body.razorpay_signature);
-
     if (generated_signature === body.razorpay_signature) {
-      console.log("✅ Signature Matched! Payment Verified.");
       
       // Update Payment Status
       payment.done = true;
@@ -57,12 +50,10 @@ export async function POST(req) {
 
       return NextResponse.json({ success: true, message: "Payment Verified" });
     } else {
-      console.log("❌ Signature Mismatch! Check if Razorpay ID and Secret belong to the same pair.");
       return NextResponse.json({ success: false, message: "Invalid Signature" });
     }
 
   } catch (error) {
-    console.error("❌ Verification Error:", error);
     return NextResponse.json({ success: false, message: "Internal Server Error" });
   }
 }
