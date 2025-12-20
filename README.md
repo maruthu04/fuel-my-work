@@ -1,36 +1,134 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ⛽ FuelMyWork - Get Support for Your Creative Journey
 
-## Getting Started
+![License](https://img.shields.io/github/license/yourusername/fuelmywork?style=flat-square&color=orange)
+![Next.js](https://img.shields.io/badge/Next.js-14.0-black?style=flat-square&logo=next.js)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0-38B2AC?style=flat-square&logo=tailwind-css)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat-square&logo=mongodb)
 
-First, run the development server:
+FuelMyWork is a crowdfunding platform designed for creators, developers, and influencers. It allows fans to support their favorite creators by "buying them a chai" (making small payments) directly through Razorpay.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**[🚀 View Live Demo](https://your-project-url.vercel.app)** · **[🐛 Report Bug](https://github.com/maruthu04/fuel-my-work/issues)**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🌟 Key Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* **🔐 Secure Authentication:**
+    * Social Login (Google & GitHub) via **NextAuth.js**.
+    * Custom Credential Login (Email/Password) with secure hashing using `bcryptjs`.
+* **💳 Payment Integration:**
+    * Seamless payments using **Razorpay**.
+    * Real-time payment status updates.
+* **🎨 Dynamic User Profiles:**
+    * Personalized pages for every creator (e.g., `fuelmywork.com/username`).
+    * Customizable cover photos and profile pictures.
+* **📊 Interactive Dashboard:**
+    * Track earnings and supporters.
+    * Update payment credentials securely.
+* **⚡ High Performance:**
+    * Built on **Next.js 14** (App Router) for server-side rendering and speed.
+    * Responsive design with **Tailwind CSS**.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Frontend:**
+* [Next.js 14](https://nextjs.org/) (React Framework)
+* [Tailwind CSS](https://tailwindcss.com/) (Styling)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Backend:**
+* [Next.js API Routes](https://nextjs.org/docs/api-routes/introduction) (Serverless Functions)
+* [MongoDB](https://www.mongodb.com/) (Database)
+* [Mongoose](https://mongoosejs.com/) (ODM)
+* [NextAuth.js](https://next-auth.js.org/) (Authentication)
 
-## Deploy on Vercel
+**Payments:**
+* [Razorpay](https://razorpay.com/)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🚀 Getting Started
+
+Follow these steps to run the project locally.
+
+### Prerequisites
+* Node.js (v18 or higher)
+* MongoDB Atlas Account or Compass
+* Razorpay Test Account (for keys)
+* Google/GitHub OAuth Credentials
+
+### Installation
+
+1.  **Clone the repository**
+    ```bash
+    git clone [https://github.com/maruthu04/fuel-my-work.git](https://github.com/maruthu04/fuel-my-work.git)
+    cd fuelmywork
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Configure Environment Variables**
+    Create a `.env` file in the root directory and add the following:
+
+    ```env
+    # Database
+    MONGODB_URI=your_mongodb_connection_string
+
+    # NextAuth
+    NEXTAUTH_URL=http://localhost:3000
+    NEXTAUTH_SECRET=generate_a_random_secret_here
+
+    # OAuth Providers
+    GITHUB_ID=your_github_client_id
+    GITHUB_SECRET=your_github_client_secret
+    GOOGLE_ID=your_google_client_id
+    GOOGLE_SECRET=your_google_client_secret
+
+    # Payments
+    NEXT_PUBLIC_RAZORPAY_KEY=your_razorpay_key_id
+    RAZORPAY_SECRET=your_razorpay_key_secret
+    ```
+
+4.  **Run the application**
+    ```bash
+    npm run dev
+    ```
+
+    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+---
+
+## 📸 Screenshots
+
+| Landing Page | User Dashboard |
+|:---:|:---:|
+| <img src="public/landing-preview.png" alt="Landing Page" width="400"> | <img src="public/dashboard-preview.png" alt="Dashboard" width="400"> |
+
+
+
+---
+
+## 🤝 Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
+
+---
+
+## 📜 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+
+Project Link: [https://github.com/maruthu04/fuel-my-work](https://github.com/maruthu04/fuel-my-work)
