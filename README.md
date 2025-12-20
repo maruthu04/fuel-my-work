@@ -7,7 +7,7 @@
 
 FuelMyWork is a crowdfunding platform designed for creators, developers, and influencers. It allows fans to support their favorite creators by "buying them a chai" (making small payments) directly through Razorpay.
 
-**[🚀 View Live Demo](https://your-project-url.vercel.app)** · **[🐛 Report Bug](https://github.com/maruthu04/fuel-my-work/issues)**
+**[🚀 View Live Demo](https://fuel-my-work-flax.vercel.app/)** · **[🐛 Report Bug](https://github.com/maruthu04/fuel-my-work/issues)**
 
 ---
 
