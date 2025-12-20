@@ -1,9 +1,10 @@
 "use client"
-export const dynamic = 'force-dynamic';
-import React from 'react'
+import React, { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 
-const Success = () => {
+// 1. Create a sub-component for the content that uses search params
+const SuccessContent = () => {
     const searchParams = useSearchParams()
     const paymentid = searchParams.get('paymentid')
 
@@ -24,11 +25,20 @@ const Success = () => {
                     <p className="font-mono font-bold text-gray-700 break-all">{paymentid}</p>
                 </div>
 
-                <a href="/" className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all">
+                <Link href="/" className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all">
                     Go to Home
-                </a>
+                </Link>
             </div>
         </div>
+    )
+}
+
+// 2. Main component wraps everything in Suspense
+const Success = () => {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex justify-center items-center">Loading...</div>}>
+            <SuccessContent />
+        </Suspense>
     )
 }
 
