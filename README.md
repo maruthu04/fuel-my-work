@@ -1,6 +1,5 @@
 # ⛽ FuelMyWork - Get Support for Your Creative Journey
 
-![License](https://img.shields.io/github/license/yourusername/fuelmywork?style=flat-square&color=orange)
 ![Next.js](https://img.shields.io/badge/Next.js-14.0-black?style=flat-square&logo=next.js)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0-38B2AC?style=flat-square&logo=tailwind-css)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat-square&logo=mongodb)
